@@ -22,7 +22,7 @@ library(ape)
 
 ## import each sequence list from its CSV file
 ## NO "strings as factor"
-coi <- read.table("./coi.csv",
+coi <- read.table("./COI_BaligaLaw2016.csv",
                   quote="\"", stringsAsFactors=FALSE)
 
 ## convert to character lists
