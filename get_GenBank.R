@@ -41,4 +41,11 @@ names(coi_gen)<-attr(coi_gen,"species")
 write.dna(coi_gen,"renamed_COI.fasta", format="fasta")
 
 
+###### now try multigenes ######
 
+accessions_batch <- read.csv("./multigene_accessions_test.csv",
+                             stringsAsFactors = FALSE)
+
+accessions_list <- as.list(accessions_batch[,-1])
+
+test <- lapply(accessions_list, ape::read.GenBank, species.names = TRUE)
