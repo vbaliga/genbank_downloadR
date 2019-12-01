@@ -42,10 +42,17 @@ write.dna(coi_gen,"renamed_COI.fasta", format="fasta")
 
 
 ###### now try multigenes ######
+library(tidyverse)
 
-accessions_batch <- read.csv("./multigene_accessions_test.csv",
-                             stringsAsFactors = FALSE)
+accessions_batch <- read_csv("./multigene_accessions_test.csv")
 
-accessions_list <- as.list(accessions_batch[,-1])
+accessions_list <- 
+  accessions_batch %>% 
+  ## exclude species names
+  dplyr::select(-binomial) %>% 
+  ## coerce to list
+  as.list() %>% 
+  ## remove NAs
+  lapply(function(x) x[!is.na(x)])
 
 test <- lapply(accessions_list, ape::read.GenBank, species.names = TRUE)
