@@ -6,10 +6,16 @@
 
 
 ############################### package loading ################################
-## For data wrangling
-library(tidyverse)
-## For reading from GenBank
-library(ape)
+packages <- c("tidyverse", "ape")
+package.check <- lapply(
+  packages,
+  FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  }
+)
 
 
 ################################# data import ##################################
@@ -42,7 +48,7 @@ accessions_list <-
 ## Use Sys.sleep() to make R momentarily pause before running the next line.
 ## This prevents overloading the API.
 ## I've found a 5-sec pause seems to work; YMMV.
-sleep_factor <- 5
+sleep_timer <- 5
 
 ## The for() loop
 ## First make a blank list
@@ -52,12 +58,26 @@ for (i in 1:length(accessions_list)){
   sequences_set[[i]] <- read.GenBank(accessions_list[[i]], 
                                       species.names = TRUE)
   ## Take a momentary pause to not overload the API
-  Sys.sleep(sleep_factor)
+  Sys.sleep(sleep_timer)
   ## Print the iteration # to track progress
   print(i)
 }
 
-## Now make list of gene names
+## Now rename according to species
+for (i in 1:length(sequences_set)){
+  names(sequences_set[[i]]) <- attr(sequences_set[[i]], "species")
+}
+
+
+################################ writing to files ##############################
+## First make list of gene names to prep for file export
 gene_names <- 
   colnames(accessions_batch)[-1] %>%
-  paste0("_seqs")
+  paste0("_seqs.fasta")
+
+## Use a for() loop to iteratively write each set of sequences to FASTA files
+for (i in 1:length(sequences_set)){
+  write.dna(sequences_set[[i]], gene_names[[i]], format = "fasta")
+}
+
+
