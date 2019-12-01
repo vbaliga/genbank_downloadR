@@ -2,7 +2,7 @@
 ## genes at a time.
 ## 
 ## Written by Vikram B. Baliga
-## Last updated: 2019-11-30
+## Last updated: 2019-12-01
 
 
 ############################### package loading ################################
@@ -25,7 +25,7 @@ package.check <- lapply(
 ## each row is one species
 accessions_batch <- read_csv("./multigene_accessions_test.csv")
 
-## now exclude the column with species names and make a list of each gene set
+## Now exclude the column with species names and make a list of each gene set
 accessions_list <- 
     accessions_batch %>% 
   ## exclude species names
@@ -35,6 +35,14 @@ accessions_list <-
   ## remove NAs
     lapply(function(x) x[!is.na(x)])
 
+## Perform a check - does the number of genes match expectations?
+## First state how many genes you expect
+number_of_genes <- 20
+## Now test
+ifelse(length(accessions_list) == number_of_genes, 
+       yes = "Number of genes matches expectations", 
+       no = stop("\nNumber of genes does not match your expectations. 
+                 \nPlease check how data are being imported."))
 
 ################################ batch downloading #############################
 ## It is possible to use lapply() on accessions_list to apply read.GenBank()
