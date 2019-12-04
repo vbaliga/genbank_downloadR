@@ -2,7 +2,7 @@
 ## genes at a time.
 ## 
 ## Written by Vikram B. Baliga
-## Last updated: 2019-12-03
+## Last updated: 2019-12-04
 
 
 ############################### package loading ################################
@@ -60,24 +60,20 @@ accessions_list <-
 
 #test <- lapply(accessions_list, ape::read.GenBank, species.names = TRUE)
 
-## Instead, a for() loop seems to be the way to go
-## Use Sys.sleep() to make R momentarily pause before running the next line.
+## Instead, we'll use purrr::slowly() along with map().
+## Use rate_delay() to make R momentarily pause before running the next line.
 ## This prevents overloading the API.
-## I've found a 5-sec pause seems to work; YMMV.
-sleep_timer <- 5
 
-## The for() loop
-## First make a blank list
-sequences_set <- list()
-for (i in 1:length(accessions_list)){
-  ## Now use read.GenBank to get the seqs
-  sequences_set[[i]] <- read.GenBank(accessions_list[[i]], 
-                                      species.names = TRUE)
-  ## Take a momentary pause to not overload the API
-  Sys.sleep(sleep_timer)
-  ## Print the iteration # to track progress
-  print(i)
-}
+## I've found a 5-sec pause seems to work; YMMV.
+sleep_timer <- rate_delay(5)
+
+## Now use slowly() to take ape::read.GenBank() and wait 5 secs
+slow_pulls <- slowly(~ read.GenBank(.x ,species.names = TRUE), 
+                     rate = sleep_timer,
+                     quiet=FALSE)
+
+## Now map this function, using accessions_list
+sequences_set <- map(accessions_list, slow_pulls)
 
 ## Now rename according to species
 for (i in 1:length(sequences_set)){
