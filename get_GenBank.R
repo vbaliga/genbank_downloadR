@@ -68,7 +68,7 @@ accessions_list <-
 sleep_timer <- rate_delay(5)
 
 ## Now use slowly() to take ape::read.GenBank() and wait 5 secs
-slow_pulls <- slowly(~ read.GenBank(.x ,species.names = TRUE), 
+slow_pulls <- slowly(~ read.GenBank(.x, species.names = TRUE), 
                      rate = sleep_timer,
                      quiet=FALSE)
 
