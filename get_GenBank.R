@@ -2,11 +2,15 @@
 ## genes at a time.
 ## 
 ## Written by Vikram B. Baliga
-## Last updated: 2019-12-01
+## Last updated: 2019-12-03
 
 
 ############################### package loading ################################
+## Specify the packages you'll use in the script
 packages <- c("tidyverse", "ape")
+## Now for each package you listed, first check to see if the package is already
+## installed. If it is installed, it's simply loaded. If not, it's downloaded 
+## from CRAN and then installed and loaded.
 package.check <- lapply(
   packages,
   FUN = function(x) {
@@ -35,14 +39,18 @@ accessions_list <-
   ## remove NAs
     lapply(function(x) x[!is.na(x)])
 
+## OPTIONAL:
 ## Perform a check - does the number of genes match expectations?
-## First state how many genes you expect
-number_of_genes <- 20
-## Now test
-ifelse(length(accessions_list) == number_of_genes, 
-       yes = "Number of genes matches expectations", 
-       no = stop("\nNumber of genes does not match your expectations. 
-                 \nPlease check how data are being imported."))
+## Next block of code is commented out so it doesn't run; un-comment if you want
+## to use it.
+### First state how many genes you expect
+#number_of_genes <- 20
+### Now test
+#ifelse(length(accessions_list) == number_of_genes, 
+#       yes = "Number of genes matches expectations", 
+#       no = stop("\nNumber of genes does not match your expectations. 
+#                 \nPlease check how data are being imported."))
+
 
 ################################ batch downloading #############################
 ## It is possible to use lapply() on accessions_list to apply read.GenBank()
