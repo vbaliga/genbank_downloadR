@@ -11,3 +11,15 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 Batch downloading of DNA or protein sequences from GenBank
 
 See the `R` script `get_GenBank_DNA.R` for details. Example data are provided in this repo
+
+## Citation
+
+Please cite as:  
+
+Baliga, Vikram B. (2020): genbank_downloadR: Batch downloading of DNA or protein sequences from GenBank in R. figshare. Software. https://doi.org/10.6084/m9.figshare.12980189 
+
+## License
+
+GPL (\>= 3)
+
+🐢
